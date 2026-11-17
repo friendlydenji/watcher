@@ -20,9 +20,9 @@ static int trace(int result, const char *operation)
 }
 int main(int argc,char **argv)
 {
-    if(argc<5){fprintf(stderr,"Usage: %s <seconds:1..120> <new-prefix> <program> [args...]\n",argv[0]);return 2;}
+    if(argc<4){fprintf(stderr,"Usage: %s <seconds:0..86400; 0=continuous> <new-prefix> <program> [args...]\n",argv[0]);return 2;}
     char *end=NULL;long seconds=strtol(argv[1],&end,10);
-    if(!end||*end||seconds<1||seconds>120)return 2;
+    if(!end||*end||seconds<0||seconds>86400)return 2;
     char kev[1024],events[1024],diagnostics[1024];
     if(snprintf(kev,sizeof(kev),"%s.kev",argv[2])>=(int)sizeof(kev)||
        snprintf(events,sizeof(events),"%s.events.log",argv[2])>=(int)sizeof(events))return 2;
@@ -67,6 +67,7 @@ int main(int argc,char **argv)
         int log=open(diagnostics,O_WRONLY|O_CREAT|O_EXCL,0600);
         if(log<0)_exit(126);
         dup2(log,STDOUT_FILENO);dup2(log,STDERR_FILENO);close(log);
+        if(!seconds){execlp("tracelogger","tracelogger","-F0","-c","-D1","-b","256","-k","256","-f",kev,(char*)NULL);perror("exec tracelogger");_exit(127);}
         execlp("tracelogger","tracelogger","-F0","-n0","-D1","-b","256","-k","256","-s",argv[1],"-f",kev,(char*)NULL);perror("exec tracelogger");_exit(127);}
     if(logger<0){perror("fork logger");goto cleanup;}
     struct timespec delay={0,200000000};nanosleep(&delay,NULL);
@@ -81,7 +82,17 @@ int main(int argc,char **argv)
     printf("WATCHER_CAPTURE pid=%ld kev=%s events=%s\n",(long)app,kev,events);fflush(stdout);
     if(write(gate[1],"1",1)!=1)goto cleanup;
     close(gate[1]);gate[1]=-1;
-    while(waitpid(app,&app_status,0)<0){if(errno!=EINTR||interrupted)goto cleanup;}
+    if(getenv("WATCHER_LIVE_FLUSH")) {
+        /* Deliver partially filled per-CPU buffers at a bounded live cadence. */
+        struct timespec tick={0,200000000};
+        for(;;) {
+            pid_t done=waitpid(app,&app_status,WNOHANG);
+            if(done==app)break;
+            if(interrupted||(done<0&&errno!=EINTR))goto cleanup;
+            if(trace(TraceEvent(_NTO_TRACE_FLUSHBUFFER),"live FLUSHBUFFER"))goto cleanup;
+            nanosleep(&tick,NULL);
+        }
+    } else while(waitpid(app,&app_status,0)<0){if(errno!=EINTR||interrupted)goto cleanup;}
     app=-1;
     rc=WIFEXITED(app_status)?WEXITSTATUS(app_status):128+WTERMSIG(app_status);
 cleanup:

@@ -10,7 +10,8 @@ function element(tag,className,text) {
 async function getJSON(url) {
   const response=await fetch(url,{cache:'no-store'});
   if(!response.ok)throw new Error(`HTTP ${response.status}`);
-  return response.json();
+  const data=await response.json();
+  return data.service==='watcher-qnx'?WatcherServiceModel.normalize(data):data;
 }
 function jobs(){return traceData?.jobs||[];}
 function slowest(){return jobs().reduce((worst,j)=>!worst||n(j.total_ms)>n(worst.total_ms)?j:worst,null);}
@@ -25,7 +26,7 @@ function renderOverview() {
     stat('Độ trễ p95',M.percentile(list).toFixed(3),'ms',list.length<20?'Ít hơn 20 job · chưa đánh dấu ngoại lai':'95% job có thời gian không vượt mức này'),
     stat('Scheduler đầy đủ',list.length?Math.round(complete/list.length*100).toString():'—','%',`${complete}/${list.length} job có đủ trạng thái worker`));
   $('insightTitle').textContent=worst?`Job #${worst.job_id} chậm nhất · ${fmt(worst.total_ms)}`:'Chưa có job để phân tích';
-  $('insightText').textContent=worst?M.diagnosis(worst):selectedTrace==='__live__'?'Theo dõi scheduler và SDK trong lúc capture. Số liệu job có sau khi phân tích hoàn tất.':'Chạy scripts/capture-app.sh với ứng dụng đã gắn SDK, sau đó chọn trace ở trên.';
+  $('insightText').textContent=worst?M.diagnosis(worst):selectedTrace==='__live__'?'Theo dõi scheduler và SDK trong lúc capture. Job được cập nhật khi có đủ dữ liệu phân tích.':'Chạy scripts/capture-app.sh với ứng dụng đã gắn SDK, sau đó chọn trace ở trên.';
   $('selectSlowest').disabled=!worst;
 }
 function stacked(job) {
@@ -161,7 +162,14 @@ async function refreshLive() {
   try {
     const live=await getJSON('/api/live');if(version!==loadVersion)return;
     WatcherTimeline.setData(live);renderRaw(live);
-    $('traceStatus').textContent=live.name?`${live.name} · ${live.loading?'Đang nạp lịch sử scheduler':live.phase==='draining'?'App đã kết thúc · đang hoàn tất capture':live.phase==='failed'?'Capture lỗi · xem terminal':live.active?'Đang nhận dữ liệu':'Capture đã dừng ghi'} · ${live.scheduler?.length||0} sự kiện scheduler${live.history_limited?' · lịch sử có giới hạn':''}`:'Đang chờ scripts/live-app.sh';
+    if(live.service==='watcher-qnx') {
+      $('serverLocation').textContent=`Target QNX · ${location.host}`;
+      document.querySelector('.local-note').lastChild.textContent=' Live từ target QNX';
+      const prior=selectedJob;traceData=live;selectedJob=jobs().find(j=>sameJob(j,prior))||slowest();
+      WatcherTimeline.setJob(selectedJob,false);renderOverview();renderJobs();renderDetail();
+      $('exportButton').href='#';$('exportButton').setAttribute('aria-disabled','false');
+    }
+    $('traceStatus').textContent=live.name?`${live.name} · ${live.loading?'Đang nạp lịch sử scheduler':live.phase==='draining'?'App đã kết thúc · đang hoàn tất capture':live.phase==='failed'?`Capture lỗi: ${live.error||'xem terminal'}`:live.phase==='waiting'?'Đang chờ bắt đầu ứng dụng':live.active?'Đang nhận dữ liệu':'Capture đã dừng ghi'} · ${live.transitions?.length??live.scheduler?.length??0} sự kiện scheduler${live.history_limited?' · lịch sử có giới hạn':''}${live.service==='watcher-qnx'?` · ${live.jobs.length} job`:''}`:'Đang chờ ứng dụng được thu trace';
     const analyzed=live.name?.replace('.events.log','.jobs.json');
     if(liveWasActive&&!live.active&&traceFiles.some(t=>t.name===analyzed)){await loadTrace(analyzed);return;}
     liveWasActive=liveWasActive||live.active;
@@ -173,3 +181,10 @@ $('jobSearch').oninput=renderJobs;$('jobSort').onchange=renderJobs;
 $('selectSlowest').onclick=()=>{const j=slowest();if(j)selectJob(j);};
 $('pauseButton').onclick=()=>{paused=!paused;$('pauseButton').textContent=paused?'Tiếp tục':'Tạm dừng';if(paused)$('liveBadge').textContent='TẠM DỪNG';else refreshLive();};
 renderOverview();refreshTraces();setInterval(refreshTraces,4000);setInterval(refreshLive,500);
+
+$('exportButton').addEventListener('click',event=>{
+  if(selectedTrace!=='__live__'||traceData?.service!=='watcher-qnx')return;
+  event.preventDefault();
+  const url=URL.createObjectURL(new Blob([JSON.stringify(WatcherServiceModel.perfetto(traceData))],{type:'application/json'}));
+  const link=document.createElement('a');link.href=url;link.download='watcher-target.perfetto.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+});

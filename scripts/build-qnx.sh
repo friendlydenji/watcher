@@ -32,4 +32,7 @@ qcc "${flags[@]}" tests/test_portable.c "$output/liblti.a" -o "$output/test_port
 qcc "${flags[@]}" tools/qnx_capture.c -o "$output/watcher-qnx-capture"
 qcc "${flags[@]}" -c demo/worker.c -o "$output/worker.o"
 q++ -V"$variant" -O2 -std=c++17 -Wall -Wextra -Wpedantic -Werror -Isdk/include demo/main.cpp "$output/worker.o" "$output/liblti.a" -o "$output/mixed_demo"
+qcc "${flags[@]}" -Isdk/include -DLTI_QNX_EVENT_ID=1020 service/watcher_service.c -Wl,--wrap=fread -Wl,-Bstatic -ltraceparser -Wl,-Bdynamic -lsocket -o "$output/watcher-service"
+mkdir -p "$output/ui"
+cp ui/* "$output/ui/"
 printf 'Built QNX artifacts in %s\n' "$output"

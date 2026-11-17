@@ -8,7 +8,7 @@ nhánh theo CPU trong thư viện; qcc chọn ABI/kiến trúc khi build.
 
 | SDK | Variant | Kết quả |
 | --- | --- | --- |
-| QNX 7.1 | gcc_ntoaarch64le | Build; chạy trên QNX 7.1 R-Car V4M |
+| QNX 7.1 | gcc_ntoaarch64le | Build; SDK chạy trên V4M, service live trên V4H |
 | QNX 7.1 | gcc_ntox86_64 | Build |
 | QNX 7.1 | gcc_ntoarmv7le | Build |
 | QNX 8.0 | gcc_ntoaarch64le | Build |
@@ -55,16 +55,26 @@ TID 1 của process A khác TID 1 của process B; UI giữ PID/TID thật và d
 track_id riêng để vẽ. Chưa giải quyết vòng đời PID reuse hay cross-process
 handoff như giới hạn schema v1; helper dưới đây lọc một process cùng các thread.
 
-## Chạy và thu trace trên QNX
+## Live qua trình duyệt trên host
+
+Service native chạy trên target, phục vụ UI và API; xem [README, mục 5](../README.md#5-mở-trình-duyệt-xem-live-trực-tiếp-từ-qnx).
+Build script tạo thêm `watcher-service` và thư mục `ui/`. Service đã được
+kiểm tra live qua trình duyệt trên QNX 7.1 V4H; QNX 8.0 hiện được kiểm tra
+build AArch64/x86_64, chưa có máy đích 8.0 để kiểm tra runtime. Bộ đọc dùng
+`libtraceparser` liên kết static, giữ parser state khi đọc các slot mới;
+không cần Python, Node.js hoặc traceprinter trên target để xem live.
+Chọn thư mục ghi đã tồn tại như `/dev/shmem` nếu image không hỗ trợ tạo
+thư mục. Không chạy hai collector đồng thời.
+
+## Thu offline trên QNX
 
 Chép các binary phù hợp vào máy đích bằng phương thức đang có, chẳng hạn
-TFTP. Với máy 192.168.0.125, bản đã kiểm tra nằm sẵn trong:
-`/tmp/watcher_portable_20261117_final`.
+TFTP. Chọn một thư mục có thể ghi trên target để đặt binary và kết quả thu.
 
 Dùng tên prefix mới cho mỗi lần chạy. Chế độ native:
 
 ```sh
-cd /tmp/watcher_portable_20261117_final
+cd /path/to/watcher
 WATCHER_QNX_BACKEND=kernel ./watcher-qnx-capture 15 /tmp/my-capture ./mixed_demo 10
 traceprinter -n -p 'cycles:0x%016c cpu:%C %Z:%z' \
   -f /tmp/my-capture.kev -o /tmp/my-capture.txt
@@ -122,9 +132,9 @@ python3 scripts/dashboard.py --port 8767
 ```
 
 Chọn trace vừa nhập. CPU/thread timelines, job breakdown và Perfetto export
-đều dùng chung dashboard. Pipeline QNX hiện là capture/import/replay; script
-live-app.sh và live endpoint incremental của Linux không chạy trực tiếp trên
-QNX. Chưa triển khai cầu truyền live QNX → host tự động trong bản này.
+đều dùng chung dashboard. Đây là luồng offline. Để xem live không chuyển file, dùng `watcher-service`
+trên target như hướng dẫn trong README. Script `live-app.sh` vẫn dành riêng
+cho Linux; service QNX có bộ đọc scheduler native riêng.
 
 ## Các nguồn đã đối chiếu
 

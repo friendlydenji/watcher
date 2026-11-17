@@ -240,36 +240,94 @@ Nếu chỉ cần thu rồi xem lại, kèm file `.dat`:
 python3 scripts/dashboard.py
 ```
 
-## 5. Thu trên QNX và xem trên máy phát triển
+## 5. Mở trình duyệt xem live trực tiếp từ QNX
 
-Chép ứng dụng, `watcher-qnx-capture` và các thư viện runtime ứng dụng cần
-sang máy đích. Máy đích cần instrumented kernel, `tracelogger`, `pidin` và
-quyền tracing. Dùng prefix mới cho mỗi lần thu; chọn thời gian dài hơn app:
+`watcher-service` chạy trên target QNX 7.1/8.0 và phục vụ cả giao diện lẫn
+API dữ liệu. Host chỉ cần trình duyệt; không cần Python trên target, không
+cần chạy dashboard trên host và không cần copy trace để xem live.
 
-```sh
-# Chạy trên QNX, tại thư mục chứa binary:
-WATCHER_QNX_BACKEND=kernel ./watcher-qnx-capture 15 /tmp/my-capture ./my_app
-traceprinter -n -p 'cycles:0x%016c cpu:%C %Z:%z' \
-  -f /tmp/my-capture.kev -o /tmp/my-capture.txt
+### Chuẩn bị target
+
+Build theo bước 1. Chép các mục sau trong thư mục output sang cùng một thư
+mục trên target, ví dụ `/tmp/watcher`:
+
+```text
+watcher-service
+watcher-qnx-capture
+ui/                     # giữ nguyên toàn bộ thư mục
+my_app                  # ứng dụng của bạn, đã gắn SDK
 ```
 
-Chép `my-capture.txt` và `my-capture.collector.log` về máy phát triển, rồi
-chạy từ thư mục repository:
+Target cần kernel có instrumentation, quyền tracing, `pidin`, `tracelogger`
+và các thư viện runtime đúng phiên bản/ABI. Nếu image chưa có `tracelogger`,
+thêm công cụ từ SDP tương ứng vào image hoặc thư mục riêng trong `PATH`.
+Không chạy collector khác, kể cả kernel tracing của IDE, cùng lúc với service.
+Nếu image không hỗ trợ `mkdir` dưới `/dev/shmem`, dùng thư mục có sẵn hoặc
+đặt các file UI cạnh binary và truyền `--ui .`.
+
+### Chạy
+
+Trong terminal trên target:
 
 ```sh
-python3 scripts/import_qnx.py /path/to/my-capture.txt \
-  --collector-log /path/to/my-capture.collector.log \
-  --output-prefix traces/my-qnx-capture
-python3 scripts/dashboard.py
+cd /tmp/watcher
+export PATH="$PWD:$PATH"
+./watcher-service --listen 0.0.0.0 --port 8765 \
+  --ui ./ui --helper ./watcher-qnx-capture --capture-dir /dev/shmem \
+  --wait-client -- ./my_app
 ```
 
-Chọn `my-qnx-capture.jobs.json` trên dashboard. Có thể dùng `traceprinter`
-của SDP trên host để chuyển `.kev` sang `.txt`. QNX tracing dùng chung toàn
-hệ thống: không chạy collector khác đồng thời với helper.
+Trên host mở **`http://<IP-target>:8765`**. Với máy đang dùng trong phiên
+kiểm tra này, địa chỉ target là `192.168.0.114`.
 
-Pipeline QNX hiện hỗ trợ **capture → import → replay**. Chưa có truyền live
-tự động từ QNX sang dashboard. Cách dùng event-file backend và cấu hình chi
-tiết nằm trong [hướng dẫn QNX](docs/qnx.md).
+- `--wait-client`: đợi trình duyệt yêu cầu dữ liệu live rồi mới chạy app,
+  giúp quan sát cả ứng dụng có thời gian chạy ngắn. Bỏ tùy chọn này để chạy ngay.
+- Sau `--` là chương trình và các tham số của nó. Service khởi chạy một app
+  mới cùng các thread của app; chưa hỗ trợ attach vào process đang chạy.
+- Mặc định thu liên tục trong thời gian app chạy. Khi app kết thúc, service
+  giữ dữ liệu trong RAM để bạn tiếp tục xem. `Ctrl+C` dừng service và phiên
+  thu do nó tạo; nếu app đó còn chạy, helper gửi SIGTERM cho app.
+- Có thể dùng `--seconds 60` để giới hạn cửa sổ thu; chọn dài hơn thời gian
+  app chạy. `--seconds 0` là không giới hạn theo thời gian.
+
+Ví dụ với ứng dụng mẫu trong gói build:
+
+```sh
+./watcher-service --ui ./ui --capture-dir /dev/shmem \
+  --wait-client -- ./mixed_demo 10
+```
+
+Service dùng SDK native `TraceEvent`, thu scheduler thật và cập nhật job trên
+trình duyệt khi có đủ SEND/RECEIVE/DONE. Mutex/condition chỉ có số đo khi app
+đánh dấu chúng. SDK không gửi HTTP; phần đọc trace và phục vụ web chạy trong
+process service riêng.
+
+### Dữ liệu và giới hạn
+
+Service giữ tối đa 20.000 SDK events, 20.000 chuyển trạng thái và 1.024
+PID/TID trong RAM; giao diện báo khi lịch sử bị giới hạn. File `.kev`,
+`.app.log` và `.collector.log` được lưu dưới `--capture-dir`. Chọn nơi có đủ
+chỗ trống; `/dev/shmem` sử dụng RAM. File thu liên tục tiếp tục tăng trong
+thời gian app chạy, dù lịch sử phục vụ trên web đã có giới hạn.
+
+Bộ đọc chỉ xử lý phần mới của `.kev`, không gọi `traceprinter` để phân tích
+lại toàn bộ file theo mỗi lần cập nhật. Helper yêu cầu flush buffer mỗi
+200 ms; trình duyệt yêu cầu dữ liệu mỗi 500 ms. Đây là nhịp cập nhật, không
+phải bảo đảm độ trễ thời gian thực. Trình duyệt ghép timeline/job và vẽ biểu đồ.
+
+Nút **Xuất Perfetto JSON** tải dữ liệu đang giữ xuống host. Các file raw trên
+target có thể dùng để lưu trữ/phân tích sâu sau đó. Service phục vụ HTTP trong
+mạng phát triển tin cậy; chưa có đăng nhập hay TLS.
+
+Để đọc lại một file native có marker SDK ngay trên target:
+
+```sh
+./watcher-service --ui ./ui --capture-dir /dev/shmem \
+  --replay-kev /path/to/capture.kev
+```
+
+Cách thu offline và nhập dữ liệu vào dashboard Python vẫn có trong
+[hướng dẫn QNX](docs/qnx.md).
 
 ## 6. Đọc kết quả
 
@@ -296,6 +354,7 @@ python3 scripts/dashboard.py
 - [API C](sdk/include/lti/lti.h) và [API C++](sdk/include/lti/lti.hpp).
 - [Schema event và giới hạn phép đo](docs/event-schema.md).
 - [Build và capture QNX](docs/qnx.md).
+- [Kiến trúc, giới hạn và kiểm chứng target service](docs/target-service.md).
 - [Hiệu năng SDK](docs/performance.md).
 - Kiểm tra mã nguồn: `make test`. Kiểm tra trình duyệt: `npm install`, `npx playwright install chromium`, rồi `npm run test:browser` (Node.js 20+).
 

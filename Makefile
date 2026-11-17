@@ -23,6 +23,7 @@ test: tests/test_sdk tests/test_portable
 	./tests/test_sdk
 	python3 -m unittest discover -s tests -v
 	node tests/test_ui.js
+	node tests/test_service_model.js
 
 clean:
 	$(MAKE) -C demo clean
