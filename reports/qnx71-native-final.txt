@@ -1,0 +1,80 @@
+# cd /tmp/watcher_portable_20261117_final
+# for i in 1 2 3 4 5; do
+>  echo BENCH optimized kernel 1 $i
+>  ./watcher-qnx-capture 10 /tmp/watcher_portable_20261117_final/native-one-$i ./benchmark_events 10000 1 kernel
+>  echo BENCH optimized kernel 4 $i
+>  ./watcher-qnx-capture 10 /tmp/watcher_portable_20261117_final/native-four-$i ./benchmark_events 2500 4 kernel
+> done
+BENCH optimized kernel 1 1
+WATCHER_CAPTURE pid=3260447 kev=/tmp/watcher_portable_20261117_final/native-one-1.kev events=/tmp/watcher_portable_20261117_final/native-one-1.events.log
+{"events":10000,"threads":1,"elapsed_ns":30540181,"ns_per_event":3054.018,"events_per_second":327437.483,"mean_thread_ns_per_event":3041.826}
+WATCHER_COMPLETE /tmp/watcher_portable_20261117_final/native-one-1
+BENCH optimized kernel 4 1
+WATCHER_CAPTURE pid=3297311 kev=/tmp/watcher_portable_20261117_final/native-four-1.kev events=/tmp/watcher_portable_20261117_final/native-four-1.events.log
+{"events":10000,"threads":4,"elapsed_ns":31971541,"ns_per_event":3197.154,"events_per_second":312778.167,"mean_thread_ns_per_event":12511.554}
+WATCHER_CAPTURE_BACKLOG: Help, we're not keeping up (138/256 accumulated in the time we took to write 26)
+WATCHER_COMPLETE /tmp/watcher_portable_20261117_final/native-four-1
+BENCH optimized kernel 1 2
+WATCHER_CAPTURE pid=3334175 kev=/tmp/watcher_portable_20261117_final/native-one-2.kev events=/tmp/watcher_portable_20261117_final/native-one-2.events.log
+{"events":10000,"threads":1,"elapsed_ns":30770762,"ns_per_event":3077.076,"events_per_second":324983.827,"mean_thread_ns_per_event":3066.096}
+WATCHER_COMPLETE /tmp/watcher_portable_20261117_final/native-one-2
+BENCH optimized kernel 4 2
+WATCHER_CAPTURE pid=3371039 kev=/tmp/watcher_portable_20261117_final/native-four-2.kev events=/tmp/watcher_portable_20261117_final/native-four-2.events.log
+{"events":10000,"threads":4,"elapsed_ns":32013541,"ns_per_event":3201.354,"events_per_second":312367.820,"mean_thread_ns_per_event":12564.540}
+WATCHER_CAPTURE_BACKLOG: Help, we're not keeping up (121/256 accumulated in the time we took to write 25)
+WATCHER_COMPLETE /tmp/watcher_portable_20261117_final/native-four-2
+BENCH optimized kernel 1 3
+WATCHER_CAPTURE pid=3407903 kev=/tmp/watcher_portable_20261117_final/native-one-3.kev events=/tmp/watcher_portable_20261117_final/native-one-3.events.log
+{"events":10000,"threads":1,"elapsed_ns":31113361,"ns_per_event":3111.336,"events_per_second":321405.328,"mean_thread_ns_per_event":3100.752}
+WATCHER_COMPLETE /tmp/watcher_portable_20261117_final/native-one-3
+BENCH optimized kernel 4 3
+WATCHER_CAPTURE pid=3444767 kev=/tmp/watcher_portable_20261117_final/native-four-3.kev events=/tmp/watcher_portable_20261117_final/native-four-3.events.log
+{"events":10000,"threads":4,"elapsed_ns":31931221,"ns_per_event":3193.122,"events_per_second":313173.117,"mean_thread_ns_per_event":12490.302}
+WATCHER_CAPTURE_BACKLOG: Help, we're not keeping up (139/256 accumulated in the time we took to write 25)
+WATCHER_COMPLETE /tmp/watcher_portable_20261117_final/native-four-3
+BENCH optimized kernel 1 4
+WATCHER_CAPTURE pid=3481631 kev=/tmp/watcher_portable_20261117_final/native-one-4.kev events=/tmp/watcher_portable_20261117_final/native-one-4.events.log
+{"events":10000,"threads":1,"elapsed_ns":30938341,"ns_per_event":3093.834,"events_per_second":323223.537,"mean_thread_ns_per_event":3082.158}
+WATCHER_COMPLETE /tmp/watcher_portable_20261117_final/native-one-4
+BENCH optimized kernel 4 4
+WATCHER_CAPTURE pid=3518495 kev=/tmp/watcher_portable_20261117_final/native-four-4.kev events=/tmp/watcher_portable_20261117_final/native-four-4.events.log
+{"events":10000,"threads":4,"elapsed_ns":31914841,"ns_per_event":3191.484,"events_per_second":313333.850,"mean_thread_ns_per_event":12525.114}
+WATCHER_CAPTURE_BACKLOG: Help, we're not keeping up (139/256 accumulated in the time we took to write 25)
+WATCHER_COMPLETE /tmp/watcher_portable_20261117_final/native-four-4
+BENCH optimized kernel 1 5
+WATCHER_CAPTURE pid=3555359 kev=/tmp/watcher_portable_20261117_final/native-one-5.kev events=/tmp/watcher_portable_20261117_final/native-one-5.events.log
+{"events":10000,"threads":1,"elapsed_ns":30735721,"ns_per_event":3073.572,"events_per_second":325354.333,"mean_thread_ns_per_event":3062.484}
+WATCHER_COMPLETE /tmp/watcher_portable_20261117_final/native-one-5
+BENCH optimized kernel 4 5
+WATCHER_CAPTURE pid=3592223 kev=/tmp/watcher_portable_20261117_final/native-four-5.kev events=/tmp/watcher_portable_20261117_final/native-four-5.events.log
+{"events":10000,"threads":4,"elapsed_ns":31981502,"ns_per_event":3198.150,"events_per_second":312680.749,"mean_thread_ns_per_event":12551.263}
+WATCHER_CAPTURE_BACKLOG: Help, we're not keeping up (138/256 accumulated in the time we took to write 26)
+WATCHER_COMPLETE /tmp/watcher_portable_20261117_final/native-four-5
+# ./watcher-qnx-capture 5 /tmp/watcher_portable_20261117_final/jobs ./job_only 20
+WATCHER_CAPTURE pid=3629087 kev=/tmp/watcher_portable_20261117_final/jobs.kev events=/tmp/watcher_portable_20261117_final/jobs.events.log
+JOB_ONLY completed=20 write_errors=0
+WATCHER_COMPLETE /tmp/watcher_portable_20261117_final/jobs
+# WATCHER_QNX_BACKEND=kernel ./watcher-qnx-capture 5 /tmp/watcher_portable_20261117_final/native-jobs ./job_only 20
+WATCHER_CAPTURE pid=3665951 kev=/tmp/watcher_portable_20261117_final/native-jobs.kev events=/tmp/watcher_portable_20261117_final/native-jobs.events.log
+JOB_ONLY completed=20 write_errors=0
+WATCHER_COMPLETE /tmp/watcher_portable_20261117_final/native-jobs
+# ./watcher-qnx-capture 5 /tmp/watcher_portable_20261117_final/cpp ./mixed_demo 1
+WATCHER_CAPTURE pid=3702815 kev=/tmp/watcher_portable_20261117_final/cpp.kev events=/tmp/watcher_portable_20261117_final/cpp.events.log
+main PID=3702815 TID=1 duration=1s
+worker TID=2
+worker processed=10 checksum=4499998500000
+worker completed=10
+main submitted=10
+WATCHER_COMPLETE /tmp/watcher_portable_20261117_final/cpp
+# for prefix in jobs native-jobs native-one-5 native-four-5 cpp; do
+>  traceprinter -n -p 'cycles:0x%016c cpu:%C %Z:%z' -f /tmp/watcher_portable_20261117_final/$prefix.kev -o /tmp/watcher_portable_20261117_final/$prefix.txt
+> done
+# grep -c 'LTI_EVENT' /tmp/watcher_portable_20261117_final/native-four-5.txt
+11000
+# cat /tmp/watcher_portable_20261117_final/native-four-5.collector.log
+Help, we're not keeping up (138/256 accumulated in the time we took to write 26)
+# 
+# watcher_rc=$?
+# printf '\nWATCHER_END_cfe82aa6a736422a9bd8276b92dbd92d %s\n' "$watcher_rc"
+
+REMOTE_EXIT 0

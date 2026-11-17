@@ -1,0 +1,12 @@
+{
+  "name": "watcher-thread-profiler",
+  "private": true,
+  "version": "0.1.0",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node tests/test_ui.js",
+    "test:browser": "node tests/test_browser.cjs"
+  },
+  "devDependencies": { "playwright": "1.62.1" }
+}

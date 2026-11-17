@@ -1,0 +1,517 @@
+{
+  "records": [
+    {
+      "events": 100000,
+      "threads": 1,
+      "elapsed_ns": 652820066,
+      "ns_per_event": 6528.201,
+      "events_per_second": 153181.566,
+      "mean_thread_ns_per_event": 6527.492,
+      "version": "baseline",
+      "mode": "devnull",
+      "repeat": 1
+    },
+    {
+      "events": 100000,
+      "threads": 1,
+      "elapsed_ns": 251586550,
+      "ns_per_event": 2515.865,
+      "events_per_second": 397477.528,
+      "mean_thread_ns_per_event": 2515.204,
+      "version": "optimized",
+      "mode": "devnull",
+      "repeat": 1
+    },
+    {
+      "events": 40000,
+      "threads": 4,
+      "elapsed_ns": 361666995,
+      "ns_per_event": 9041.675,
+      "events_per_second": 110598.978,
+      "mean_thread_ns_per_event": 36141.984,
+      "version": "baseline",
+      "mode": "devnull",
+      "repeat": 1
+    },
+    {
+      "events": 40000,
+      "threads": 4,
+      "elapsed_ns": 265321451,
+      "ns_per_event": 6633.036,
+      "events_per_second": 150760.52,
+      "mean_thread_ns_per_event": 26510.643,
+      "version": "optimized",
+      "mode": "devnull",
+      "repeat": 1
+    },
+    {
+      "events": 10000,
+      "threads": 1,
+      "elapsed_ns": 143997606,
+      "ns_per_event": 14399.761,
+      "events_per_second": 69445.599,
+      "mean_thread_ns_per_event": 14392.201,
+      "version": "baseline",
+      "mode": "regular-file",
+      "repeat": 1
+    },
+    {
+      "events": 10000,
+      "threads": 1,
+      "elapsed_ns": 99857764,
+      "ns_per_event": 9985.776,
+      "events_per_second": 100142.439,
+      "mean_thread_ns_per_event": 9978.702,
+      "version": "optimized",
+      "mode": "regular-file",
+      "repeat": 1
+    },
+    {
+      "events": 100000,
+      "threads": 1,
+      "elapsed_ns": 650928626,
+      "ns_per_event": 6509.286,
+      "events_per_second": 153626.674,
+      "mean_thread_ns_per_event": 6508.653,
+      "version": "baseline",
+      "mode": "devnull",
+      "repeat": 2
+    },
+    {
+      "events": 100000,
+      "threads": 1,
+      "elapsed_ns": 250260550,
+      "ns_per_event": 2502.606,
+      "events_per_second": 399583.554,
+      "mean_thread_ns_per_event": 2501.938,
+      "version": "optimized",
+      "mode": "devnull",
+      "repeat": 2
+    },
+    {
+      "events": 40000,
+      "threads": 4,
+      "elapsed_ns": 266479750,
+      "ns_per_event": 6661.994,
+      "events_per_second": 150105.214,
+      "mean_thread_ns_per_event": 26627.81,
+      "version": "baseline",
+      "mode": "devnull",
+      "repeat": 2
+    },
+    {
+      "events": 40000,
+      "threads": 4,
+      "elapsed_ns": 266827870,
+      "ns_per_event": 6670.697,
+      "events_per_second": 149909.378,
+      "mean_thread_ns_per_event": 26664.754,
+      "version": "optimized",
+      "mode": "devnull",
+      "repeat": 2
+    },
+    {
+      "events": 10000,
+      "threads": 1,
+      "elapsed_ns": 142750446,
+      "ns_per_event": 14275.045,
+      "events_per_second": 70052.321,
+      "mean_thread_ns_per_event": 14268.739,
+      "version": "baseline",
+      "mode": "regular-file",
+      "repeat": 2
+    },
+    {
+      "events": 10000,
+      "threads": 1,
+      "elapsed_ns": 99332944,
+      "ns_per_event": 9933.294,
+      "events_per_second": 100671.536,
+      "mean_thread_ns_per_event": 9926.532,
+      "version": "optimized",
+      "mode": "regular-file",
+      "repeat": 2
+    },
+    {
+      "events": 100000,
+      "threads": 1,
+      "elapsed_ns": 649571966,
+      "ns_per_event": 6495.72,
+      "events_per_second": 153947.53,
+      "mean_thread_ns_per_event": 6495.116,
+      "version": "baseline",
+      "mode": "devnull",
+      "repeat": 3
+    },
+    {
+      "events": 100000,
+      "threads": 1,
+      "elapsed_ns": 249395650,
+      "ns_per_event": 2493.956,
+      "events_per_second": 400969.303,
+      "mean_thread_ns_per_event": 2493.289,
+      "version": "optimized",
+      "mode": "devnull",
+      "repeat": 3
+    },
+    {
+      "events": 40000,
+      "threads": 4,
+      "elapsed_ns": 266630171,
+      "ns_per_event": 6665.754,
+      "events_per_second": 150020.532,
+      "mean_thread_ns_per_event": 26644.248,
+      "version": "baseline",
+      "mode": "devnull",
+      "repeat": 3
+    },
+    {
+      "events": 40000,
+      "threads": 4,
+      "elapsed_ns": 263669111,
+      "ns_per_event": 6591.728,
+      "events_per_second": 151705.294,
+      "mean_thread_ns_per_event": 26346.766,
+      "version": "optimized",
+      "mode": "devnull",
+      "repeat": 3
+    },
+    {
+      "events": 10000,
+      "threads": 1,
+      "elapsed_ns": 142040826,
+      "ns_per_event": 14204.083,
+      "events_per_second": 70402.294,
+      "mean_thread_ns_per_event": 14196.061,
+      "version": "baseline",
+      "mode": "regular-file",
+      "repeat": 3
+    },
+    {
+      "events": 10000,
+      "threads": 1,
+      "elapsed_ns": 100126984,
+      "ns_per_event": 10012.698,
+      "events_per_second": 99873.177,
+      "mean_thread_ns_per_event": 10005.228,
+      "version": "optimized",
+      "mode": "regular-file",
+      "repeat": 3
+    },
+    {
+      "events": 100000,
+      "threads": 1,
+      "elapsed_ns": 649196186,
+      "ns_per_event": 6491.962,
+      "events_per_second": 154036.641,
+      "mean_thread_ns_per_event": 6491.329,
+      "version": "baseline",
+      "mode": "devnull",
+      "repeat": 4
+    },
+    {
+      "events": 100000,
+      "threads": 1,
+      "elapsed_ns": 252586390,
+      "ns_per_event": 2525.864,
+      "events_per_second": 395904.15,
+      "mean_thread_ns_per_event": 2525.217,
+      "version": "optimized",
+      "mode": "devnull",
+      "repeat": 4
+    },
+    {
+      "events": 40000,
+      "threads": 4,
+      "elapsed_ns": 266394790,
+      "ns_per_event": 6659.87,
+      "events_per_second": 150153.087,
+      "mean_thread_ns_per_event": 26619.993,
+      "version": "baseline",
+      "mode": "devnull",
+      "repeat": 4
+    },
+    {
+      "events": 40000,
+      "threads": 4,
+      "elapsed_ns": 263784971,
+      "ns_per_event": 6594.624,
+      "events_per_second": 151638.662,
+      "mean_thread_ns_per_event": 26358.096,
+      "version": "optimized",
+      "mode": "devnull",
+      "repeat": 4
+    },
+    {
+      "events": 10000,
+      "threads": 1,
+      "elapsed_ns": 145146726,
+      "ns_per_event": 14514.673,
+      "events_per_second": 68895.801,
+      "mean_thread_ns_per_event": 14506.183,
+      "version": "baseline",
+      "mode": "regular-file",
+      "repeat": 4
+    },
+    {
+      "events": 10000,
+      "threads": 1,
+      "elapsed_ns": 100175284,
+      "ns_per_event": 10017.528,
+      "events_per_second": 99825.023,
+      "mean_thread_ns_per_event": 10010.058,
+      "version": "optimized",
+      "mode": "regular-file",
+      "repeat": 4
+    },
+    {
+      "events": 100000,
+      "threads": 1,
+      "elapsed_ns": 649399226,
+      "ns_per_event": 6493.992,
+      "events_per_second": 153988.48,
+      "mean_thread_ns_per_event": 6493.352,
+      "version": "baseline",
+      "mode": "devnull",
+      "repeat": 5
+    },
+    {
+      "events": 100000,
+      "threads": 1,
+      "elapsed_ns": 252168010,
+      "ns_per_event": 2521.68,
+      "events_per_second": 396561.007,
+      "mean_thread_ns_per_event": 2520.992,
+      "version": "optimized",
+      "mode": "devnull",
+      "repeat": 5
+    },
+    {
+      "events": 40000,
+      "threads": 4,
+      "elapsed_ns": 266007791,
+      "ns_per_event": 6650.195,
+      "events_per_second": 150371.536,
+      "mean_thread_ns_per_event": 26579.842,
+      "version": "baseline",
+      "mode": "devnull",
+      "repeat": 5
+    },
+    {
+      "events": 40000,
+      "threads": 4,
+      "elapsed_ns": 263175431,
+      "ns_per_event": 6579.386,
+      "events_per_second": 151989.872,
+      "mean_thread_ns_per_event": 26295.787,
+      "version": "optimized",
+      "mode": "devnull",
+      "repeat": 5
+    },
+    {
+      "events": 10000,
+      "threads": 1,
+      "elapsed_ns": 142866486,
+      "ns_per_event": 14286.649,
+      "events_per_second": 69995.422,
+      "mean_thread_ns_per_event": 14279.449,
+      "version": "baseline",
+      "mode": "regular-file",
+      "repeat": 5
+    },
+    {
+      "events": 10000,
+      "threads": 1,
+      "elapsed_ns": 100254064,
+      "ns_per_event": 10025.406,
+      "events_per_second": 99746.58,
+      "mean_thread_ns_per_event": 10017.402,
+      "version": "optimized",
+      "mode": "regular-file",
+      "repeat": 5
+    },
+    {
+      "events": 10000,
+      "threads": 1,
+      "elapsed_ns": 30540181,
+      "ns_per_event": 3054.018,
+      "events_per_second": 327437.483,
+      "mean_thread_ns_per_event": 3041.826,
+      "version": "optimized",
+      "mode": "kernel",
+      "repeat": 1
+    },
+    {
+      "events": 10000,
+      "threads": 4,
+      "elapsed_ns": 31971541,
+      "ns_per_event": 3197.154,
+      "events_per_second": 312778.167,
+      "mean_thread_ns_per_event": 12511.554,
+      "version": "optimized",
+      "mode": "kernel",
+      "repeat": 1
+    },
+    {
+      "events": 10000,
+      "threads": 1,
+      "elapsed_ns": 30770762,
+      "ns_per_event": 3077.076,
+      "events_per_second": 324983.827,
+      "mean_thread_ns_per_event": 3066.096,
+      "version": "optimized",
+      "mode": "kernel",
+      "repeat": 2
+    },
+    {
+      "events": 10000,
+      "threads": 4,
+      "elapsed_ns": 32013541,
+      "ns_per_event": 3201.354,
+      "events_per_second": 312367.82,
+      "mean_thread_ns_per_event": 12564.54,
+      "version": "optimized",
+      "mode": "kernel",
+      "repeat": 2
+    },
+    {
+      "events": 10000,
+      "threads": 1,
+      "elapsed_ns": 31113361,
+      "ns_per_event": 3111.336,
+      "events_per_second": 321405.328,
+      "mean_thread_ns_per_event": 3100.752,
+      "version": "optimized",
+      "mode": "kernel",
+      "repeat": 3
+    },
+    {
+      "events": 10000,
+      "threads": 4,
+      "elapsed_ns": 31931221,
+      "ns_per_event": 3193.122,
+      "events_per_second": 313173.117,
+      "mean_thread_ns_per_event": 12490.302,
+      "version": "optimized",
+      "mode": "kernel",
+      "repeat": 3
+    },
+    {
+      "events": 10000,
+      "threads": 1,
+      "elapsed_ns": 30938341,
+      "ns_per_event": 3093.834,
+      "events_per_second": 323223.537,
+      "mean_thread_ns_per_event": 3082.158,
+      "version": "optimized",
+      "mode": "kernel",
+      "repeat": 4
+    },
+    {
+      "events": 10000,
+      "threads": 4,
+      "elapsed_ns": 31914841,
+      "ns_per_event": 3191.484,
+      "events_per_second": 313333.85,
+      "mean_thread_ns_per_event": 12525.114,
+      "version": "optimized",
+      "mode": "kernel",
+      "repeat": 4
+    },
+    {
+      "events": 10000,
+      "threads": 1,
+      "elapsed_ns": 30735721,
+      "ns_per_event": 3073.572,
+      "events_per_second": 325354.333,
+      "mean_thread_ns_per_event": 3062.484,
+      "version": "optimized",
+      "mode": "kernel",
+      "repeat": 5
+    },
+    {
+      "events": 10000,
+      "threads": 4,
+      "elapsed_ns": 31981502,
+      "ns_per_event": 3198.15,
+      "events_per_second": 312680.749,
+      "mean_thread_ns_per_event": 12551.263,
+      "version": "optimized",
+      "mode": "kernel",
+      "repeat": 5
+    }
+  ],
+  "summary": [
+    {
+      "mode": "devnull",
+      "threads": 1,
+      "baseline_median_ns_per_event": 6495.72,
+      "baseline_median_thread_ns_per_event": 6495.116,
+      "baseline_range_ns_per_event": [
+        6491.962,
+        6528.201
+      ],
+      "optimized_median_ns_per_event": 2515.865,
+      "optimized_median_thread_ns_per_event": 2515.204,
+      "optimized_range_ns_per_event": [
+        2493.956,
+        2525.864
+      ],
+      "reduction_percent": 61.268881663618515
+    },
+    {
+      "mode": "devnull",
+      "threads": 4,
+      "baseline_median_ns_per_event": 6661.994,
+      "baseline_median_thread_ns_per_event": 26627.81,
+      "baseline_range_ns_per_event": [
+        6650.195,
+        9041.675
+      ],
+      "optimized_median_ns_per_event": 6594.624,
+      "optimized_median_thread_ns_per_event": 26358.096,
+      "optimized_range_ns_per_event": [
+        6579.386,
+        6670.697
+      ],
+      "reduction_percent": 1.0112587912868065
+    },
+    {
+      "mode": "regular-file",
+      "threads": 1,
+      "baseline_median_ns_per_event": 14286.649,
+      "baseline_median_thread_ns_per_event": 14279.449,
+      "baseline_range_ns_per_event": [
+        14204.083,
+        14514.673
+      ],
+      "optimized_median_ns_per_event": 10012.698,
+      "optimized_median_thread_ns_per_event": 10005.228,
+      "optimized_range_ns_per_event": [
+        9933.294,
+        10025.406
+      ],
+      "reduction_percent": 29.915699615774137
+    },
+    {
+      "mode": "kernel",
+      "threads": 1,
+      "optimized_median_ns_per_event": 3077.076,
+      "optimized_median_thread_ns_per_event": 3066.096,
+      "optimized_range_ns_per_event": [
+        3054.018,
+        3111.336
+      ]
+    },
+    {
+      "mode": "kernel",
+      "threads": 4,
+      "optimized_median_ns_per_event": 3197.154,
+      "optimized_median_thread_ns_per_event": 12525.114,
+      "optimized_range_ns_per_event": [
+        3191.484,
+        3201.354
+      ]
+    }
+  ]
+}

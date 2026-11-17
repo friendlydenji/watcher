@@ -1,0 +1,82 @@
+# cd /tmp/watcher_portable_20261117_final
+# ./test_portable
+PORTABLE_TEST records=4002 child_records=1 errors=0
+# for i in 1 2 3 4 5; do
+>  echo BENCH baseline devnull 1 $i
+>  /tmp/watcher_portable_20261117_v4/benchmark_baseline 100000 1 /dev/null
+>  echo BENCH optimized devnull 1 $i
+>  ./benchmark_events 100000 1 /dev/null
+>  echo BENCH baseline devnull 4 $i
+>  /tmp/watcher_portable_20261117_v4/benchmark_baseline 10000 4 /dev/null
+>  echo BENCH optimized devnull 4 $i
+>  ./benchmark_events 10000 4 /dev/null
+>  echo BENCH baseline regular-file 1 $i
+>  /tmp/watcher_portable_20261117_v4/benchmark_baseline 10000 1 /tmp/watcher_portable_20261117_final/baseline-$i.log
+>  echo BENCH optimized regular-file 1 $i
+>  ./benchmark_events 10000 1 /tmp/watcher_portable_20261117_final/optimized-$i.log
+> done
+BENCH baseline devnull 1 1
+{"events":100000,"threads":1,"elapsed_ns":652820066,"ns_per_event":6528.201,"events_per_second":153181.566,"mean_thread_ns_per_event":6527.492}
+BENCH optimized devnull 1 1
+{"events":100000,"threads":1,"elapsed_ns":251586550,"ns_per_event":2515.865,"events_per_second":397477.528,"mean_thread_ns_per_event":2515.204}
+BENCH baseline devnull 4 1
+{"events":40000,"threads":4,"elapsed_ns":361666995,"ns_per_event":9041.675,"events_per_second":110598.978,"mean_thread_ns_per_event":36141.984}
+BENCH optimized devnull 4 1
+{"events":40000,"threads":4,"elapsed_ns":265321451,"ns_per_event":6633.036,"events_per_second":150760.520,"mean_thread_ns_per_event":26510.643}
+BENCH baseline regular-file 1 1
+{"events":10000,"threads":1,"elapsed_ns":143997606,"ns_per_event":14399.761,"events_per_second":69445.599,"mean_thread_ns_per_event":14392.201}
+BENCH optimized regular-file 1 1
+{"events":10000,"threads":1,"elapsed_ns":99857764,"ns_per_event":9985.776,"events_per_second":100142.439,"mean_thread_ns_per_event":9978.702}
+BENCH baseline devnull 1 2
+{"events":100000,"threads":1,"elapsed_ns":650928626,"ns_per_event":6509.286,"events_per_second":153626.674,"mean_thread_ns_per_event":6508.653}
+BENCH optimized devnull 1 2
+{"events":100000,"threads":1,"elapsed_ns":250260550,"ns_per_event":2502.606,"events_per_second":399583.554,"mean_thread_ns_per_event":2501.938}
+BENCH baseline devnull 4 2
+{"events":40000,"threads":4,"elapsed_ns":266479750,"ns_per_event":6661.994,"events_per_second":150105.214,"mean_thread_ns_per_event":26627.810}
+BENCH optimized devnull 4 2
+{"events":40000,"threads":4,"elapsed_ns":266827870,"ns_per_event":6670.697,"events_per_second":149909.378,"mean_thread_ns_per_event":26664.754}
+BENCH baseline regular-file 1 2
+{"events":10000,"threads":1,"elapsed_ns":142750446,"ns_per_event":14275.045,"events_per_second":70052.321,"mean_thread_ns_per_event":14268.739}
+BENCH optimized regular-file 1 2
+{"events":10000,"threads":1,"elapsed_ns":99332944,"ns_per_event":9933.294,"events_per_second":100671.536,"mean_thread_ns_per_event":9926.532}
+BENCH baseline devnull 1 3
+{"events":100000,"threads":1,"elapsed_ns":649571966,"ns_per_event":6495.720,"events_per_second":153947.530,"mean_thread_ns_per_event":6495.116}
+BENCH optimized devnull 1 3
+{"events":100000,"threads":1,"elapsed_ns":249395650,"ns_per_event":2493.956,"events_per_second":400969.303,"mean_thread_ns_per_event":2493.289}
+BENCH baseline devnull 4 3
+{"events":40000,"threads":4,"elapsed_ns":266630171,"ns_per_event":6665.754,"events_per_second":150020.532,"mean_thread_ns_per_event":26644.248}
+BENCH optimized devnull 4 3
+{"events":40000,"threads":4,"elapsed_ns":263669111,"ns_per_event":6591.728,"events_per_second":151705.294,"mean_thread_ns_per_event":26346.766}
+BENCH baseline regular-file 1 3
+{"events":10000,"threads":1,"elapsed_ns":142040826,"ns_per_event":14204.083,"events_per_second":70402.294,"mean_thread_ns_per_event":14196.061}
+BENCH optimized regular-file 1 3
+{"events":10000,"threads":1,"elapsed_ns":100126984,"ns_per_event":10012.698,"events_per_second":99873.177,"mean_thread_ns_per_event":10005.228}
+BENCH baseline devnull 1 4
+{"events":100000,"threads":1,"elapsed_ns":649196186,"ns_per_event":6491.962,"events_per_second":154036.641,"mean_thread_ns_per_event":6491.329}
+BENCH optimized devnull 1 4
+{"events":100000,"threads":1,"elapsed_ns":252586390,"ns_per_event":2525.864,"events_per_second":395904.150,"mean_thread_ns_per_event":2525.217}
+BENCH baseline devnull 4 4
+{"events":40000,"threads":4,"elapsed_ns":266394790,"ns_per_event":6659.870,"events_per_second":150153.087,"mean_thread_ns_per_event":26619.993}
+BENCH optimized devnull 4 4
+{"events":40000,"threads":4,"elapsed_ns":263784971,"ns_per_event":6594.624,"events_per_second":151638.662,"mean_thread_ns_per_event":26358.096}
+BENCH baseline regular-file 1 4
+{"events":10000,"threads":1,"elapsed_ns":145146726,"ns_per_event":14514.673,"events_per_second":68895.801,"mean_thread_ns_per_event":14506.183}
+BENCH optimized regular-file 1 4
+{"events":10000,"threads":1,"elapsed_ns":100175284,"ns_per_event":10017.528,"events_per_second":99825.023,"mean_thread_ns_per_event":10010.058}
+BENCH baseline devnull 1 5
+{"events":100000,"threads":1,"elapsed_ns":649399226,"ns_per_event":6493.992,"events_per_second":153988.480,"mean_thread_ns_per_event":6493.352}
+BENCH optimized devnull 1 5
+{"events":100000,"threads":1,"elapsed_ns":252168010,"ns_per_event":2521.680,"events_per_second":396561.007,"mean_thread_ns_per_event":2520.992}
+BENCH baseline devnull 4 5
+{"events":40000,"threads":4,"elapsed_ns":266007791,"ns_per_event":6650.195,"events_per_second":150371.536,"mean_thread_ns_per_event":26579.842}
+BENCH optimized devnull 4 5
+{"events":40000,"threads":4,"elapsed_ns":263175431,"ns_per_event":6579.386,"events_per_second":151989.872,"mean_thread_ns_per_event":26295.787}
+BENCH baseline regular-file 1 5
+{"events":10000,"threads":1,"elapsed_ns":142866486,"ns_per_event":14286.649,"events_per_second":69995.422,"mean_thread_ns_per_event":14279.449}
+BENCH optimized regular-file 1 5
+{"events":10000,"threads":1,"elapsed_ns":100254064,"ns_per_event":10025.406,"events_per_second":99746.580,"mean_thread_ns_per_event":10017.402}
+# 
+# watcher_rc=$?
+# printf '\nWATCHER_END_f07ebd8a4dd54bf1997c46610649127b %s\n' "$watcher_rc"
+
+REMOTE_EXIT 0

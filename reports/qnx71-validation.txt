@@ -1,0 +1,18 @@
+# cd /tmp/watcher_portable_20261117_v4
+# ./test_portable
+PORTABLE_TEST records=4002 child_records=1 errors=0
+# ./watcher-qnx-capture 5 /tmp/watcher_portable_20261117_v4/jobs ./job_only 20
+WATCHER_CAPTURE pid=1396767 kev=/tmp/watcher_portable_20261117_v4/jobs.kev events=/tmp/watcher_portable_20261117_v4/jobs.events.log
+JOB_ONLY completed=20 write_errors=0
+WATCHER_COMPLETE /tmp/watcher_portable_20261117_v4/jobs
+# traceprinter -n -p 'cycles:0x%016c cpu:%C %Z:%z' -f /tmp/watcher_portable_20261117_v4/jobs.kev -o /tmp/watcher_portable_20261117_v4/jobs.txt
+# WATCHER_QNX_BACKEND=kernel ./watcher-qnx-capture 5 /tmp/watcher_portable_20261117_v4/native ./job_only 20
+WATCHER_CAPTURE pid=1441823 kev=/tmp/watcher_portable_20261117_v4/native.kev events=/tmp/watcher_portable_20261117_v4/native.events.log
+JOB_ONLY completed=20 write_errors=0
+WATCHER_COMPLETE /tmp/watcher_portable_20261117_v4/native
+# traceprinter -n -p 'cycles:0x%016c cpu:%C %Z:%z' -f /tmp/watcher_portable_20261117_v4/native.kev -o /tmp/watcher_portable_20261117_v4/native.txt
+# 
+# watcher_rc=$?
+# printf '\nWATCHER_END_610b4b243c284168b62d7f435d3b6e6b %s\n' "$watcher_rc"
+
+REMOTE_EXIT 0

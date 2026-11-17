@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f6f8">
+  <title>Watcher · Phân tích tương tác thread</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Watcher trang chủ"><span class="brand-icon" aria-hidden="true">w<span>•</span></span><strong>watcher<span class="brand-tag">THREAD PROFILER</span></strong></a>
+    <span class="local-note"><i></i> Không gian phân tích cục bộ</span>
+    <a class="text-link" href="https://github.com/friendlydenji/watcher" target="_blank" rel="noreferrer">Mã nguồn ↗</a>
+  </header>
+  <main>
+    <div class="page-heading"><div><p class="eyebrow">WORKSPACE / PHÂN TÍCH TRACE</p><h1>Mỗi job đều có một câu chuyện.</h1><p class="subheading">Xem thread chạy, chờ và chuyển việc — tìm nơi thời gian bị giữ lại.</p></div><div class="source-picker"><label for="traceSelect">NGUỒN DỮ LIỆU</label><select id="traceSelect" aria-label="Chọn trace"><option value="__live__">Theo dõi capture trực tiếp</option></select><span id="traceStatus" role="status">Đang tải danh sách trace…</span></div></div>
+    <section class="insight" aria-labelledby="insightTitle"><span class="insight-icon" aria-hidden="true">↗</span><div><p class="eyebrow">ĐIỂM CẦN CHÚ Ý</p><h2 id="insightTitle">Chưa có job để phân tích</h2><p id="insightText">Thu trace từ ứng dụng đã gắn SDK để bắt đầu.</p></div><button id="selectSlowest" type="button" class="quiet-button" disabled>Xem job chậm nhất ↗</button></section>
+    <section id="stats" class="stats" aria-label="Tổng quan trace"></section>
+    <div class="workspace">
+      <aside class="panel jobs-panel" aria-labelledby="jobsTitle">
+        <div class="panel-heading"><div><p class="eyebrow">01 / KHÁM PHÁ</p><h2 id="jobsTitle">Danh sách job <span id="jobCount" class="count">0</span></h2></div><span class="small-muted">send → done</span></div>
+        <div class="job-controls"><input id="jobSearch" type="search" placeholder="Tìm job, PID hoặc TID…" aria-label="Tìm job"><label for="jobSort" class="small-muted">Sắp xếp</label><select id="jobSort"><option value="slowest">Chậm nhất trước</option><option value="queue">Hàng đợi lâu nhất</option><option value="recent">Mới nhất trước</option></select></div>
+        <div id="jobsList" class="jobs-list"><p class="empty">Chưa có job đã phân tích.</p></div>
+        <div class="list-note">Thanh màu = hàng đợi + trạng thái worker.<br>Chờ mutex được hiển thị riêng trong chi tiết.</div>
+      </aside>
+      <div class="analysis-column">
+        <section class="panel timeline-panel" aria-labelledby="chartTitle">
+          <div class="panel-heading"><div><p class="eyebrow">02 / THEO DÕI</p><h2 id="chartTitle">Dòng thời gian <span id="liveBadge" class="badge">REPLAY</span></h2></div><div class="tabs" role="tablist" aria-label="Kiểu timeline"><button id="threadTab" role="tab" aria-selected="true" type="button">Theo thread</button><button id="cpuTab" role="tab" aria-selected="false" type="button">Theo CPU</button></div></div>
+          <div class="timeline-toolbar"><div class="toolbar-group"><label for="windowSelect">Cửa sổ</label><select id="windowSelect"><option value="fit">Toàn bộ trace</option><option value="custom" disabled>Tùy chỉnh</option><option value="10">10 ms</option><option value="100">100 ms</option><option value="500">500 ms</option><option value="2000">2 s</option><option value="5000">5 s</option></select><button id="zoomIn" type="button" aria-label="Phóng to">＋</button><button id="zoomOut" type="button" aria-label="Thu nhỏ">−</button><button id="fitTrace" type="button">Vừa trace</button></div><div class="toolbar-group"><label><input id="showFlows" type="checkbox" checked> Chuyển job</label><label><input id="showWakeups" type="checkbox"> Wakeup</label><button id="followLive" type="button" hidden>Theo dõi live →</button><button id="pauseButton" type="button" hidden>Tạm dừng</button></div></div>
+          <div class="chart-caption"><span id="cpuSubtitle">Mỗi hàng là một thread. Màu biểu thị trạng thái.</span><button id="clearFocus" type="button" hidden>Bỏ lọc thread ×</button></div>
+          <div id="threadLegend" class="thread-legend"></div>
+          <div id="cpuChart" class="cpu-chart" tabindex="0" aria-label="Timeline tương tác; W S phóng to thu nhỏ, A D di chuyển"><p class="empty">Chưa có dữ liệu scheduler.<br><small>Chạy capture-app.sh hoặc chọn một trace đã phân tích.</small></p></div>
+          <div id="stateLegend" class="state-legend"></div>
+          <div class="timeline-footer"><label for="timeOffset">Cũ → Mới</label><input id="timeOffset" type="range" min="0" max="1000" step="1" value="1000"><span id="offsetLabel">Toàn bộ trace</span><span class="keyboard-hint">W/S zoom · A/D di chuyển · Shift+kéo</span></div>
+          <p id="rangeSummary" class="range-summary" hidden></p>
+        </section>
+        <section class="panel detail-panel" id="detailPanel" aria-labelledby="detailTitle">
+          <div class="panel-heading"><div><p class="eyebrow">03 / HIỂU NGUYÊN NHÂN</p><h2 id="detailTitle">Chi tiết job</h2></div><span id="detailStatus" class="badge">Chưa chọn</span></div>
+          <div id="detailIdentity" class="detail-identity"></div>
+          <p id="jobDiagnosis" class="job-diagnosis">Chọn một job hoặc một khoảng trên timeline để xem chi tiết.</p>
+          <div id="metrics" class="metrics"></div><div id="timeline" class="detail-timeline"></div>
+          <p class="note">Hàng đợi + trạng thái worker tạo thành tổng thời gian. Mutex và condition là khoảng quan sát có thể trùng với các trạng thái; chúng không được cộng thêm vào tổng.</p>
+          <div id="sliceDetail" class="slice-detail" hidden role="status"></div>
+        </section>
+      </div>
+    </div>
+    <details id="rawPanel" class="panel raw-panel"><summary><span>⌘ &nbsp; Sự kiện gốc <small>Kiểm tra ứng dụng và scheduler</small></span><span class="small-muted">Mở để xem ↓</span></summary><div class="raw-columns"><section><h3>Ứng dụng <span id="liveSource"></span></h3><div id="liveEvents" class="raw-events"></div></section><section><h3>Scheduler</h3><div id="liveScheduler" class="raw-events"></div></section></div></details>
+    <footer class="page-footer"><span>watcher <span class="footer-dot">/</span> Linux &amp; QNX Thread Interaction Profiler</span><div><a id="exportButton" class="text-link" aria-disabled="true">Xuất Perfetto JSON ↗</a><span>Chạy trên máy của bạn · 127.0.0.1</span></div></footer>
+  </main>
+  <script src="/model.js"></script><script src="/cpu.js"></script><script src="/app.js"></script>
+</body>
+</html>
